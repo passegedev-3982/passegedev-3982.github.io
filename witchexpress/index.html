@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Witch Express Support</title>
+  <meta name="description" content="Support for Witch Express: bug reports, questions and feedback." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l3.6 8.8 9.4.7-7.2 6.1 2.3 9.2L16 21.9l-8.1 4.9 2.3-9.2L3 11.5l9.4-.7z' fill='%23ffc94d' stroke='%238b6cf0' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Gowun+Dodum&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --sky-top: #cfeaff;
+      --sky: #e8f5ff;
+      --cloud: #fffaf1;
+      --cloud-shade: #e6defa;
+      --sea: #7fd0df;
+      --sea-deep: #3f8fb8;
+      --deep: #2d4f8f;
+      --ink: #2b2f4a;
+      --muted: #646a8a;
+      --lilac: #8b6cf0;
+      --lilac-soft: #efe9ff;
+      --star: #ffc94d;
+      --card: #ffffff;
+      --line: #e3ddf7;
+      --ok: #2f9e6e;
+      --bad: #d6455d;
+      --radius: 20px;
+      --font: 'M PLUS Rounded 1c', 'Gowun Dodum', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.65;
+      background: linear-gradient(180deg, var(--sky-top) 0, var(--sky) 200px, var(--cloud) 330px, var(--cloud) 62%, var(--sea) 80%, var(--sea-deep) 92%, var(--deep) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+    /* Header */
+    header { padding: 20px 0 0; }
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+    .brand svg { width: 34px; height: 34px; flex: none; }
+    .brand b { font-weight: 800; font-size: 1.25rem; letter-spacing: 0.01em; }
+    .brand small:empty { display: none; }
+    .brand small { display: block; font-size: 0.78rem; color: var(--muted); font-weight: 500; line-height: 1.2; }
+    .langs { display: flex; gap: 4px; background: rgba(255,255,255,0.7); padding: 4px; border-radius: 999px; border: 1px solid var(--line); }
+    .langs button {
+      font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--muted);
+      background: none; border: 0; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    }
+    .langs button[aria-pressed="true"] { background: var(--lilac); color: #fff; }
+
+    /* Hero */
+    .hero { position: relative; overflow: hidden; padding: 44px 0 96px; text-align: center; }
+    .hero h1 { margin: 0; font-size: clamp(2rem, 6vw, 2.8rem); font-weight: 800; line-height: 1.2; }
+    .hero p { margin: 12px auto 0; max-width: 520px; color: var(--muted); font-size: 1.02rem; }
+    .hero nav { margin-top: 22px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      display: inline-block; text-decoration: none; font-weight: 700; font-size: 0.92rem;
+      color: var(--lilac); background: #fff; border: 1px solid var(--line); padding: 8px 16px; border-radius: 999px;
+    }
+    .chip:hover { background: var(--lilac-soft); }
+    .clouds { position: absolute; left: 50%; bottom: 0; width: 1400px; max-width: none; transform: translateX(-50%); height: 120px; pointer-events: none; }
+    .sparkle { position: absolute; width: 18px; height: 18px; animation: twinkle 3s ease-in-out infinite; }
+    @keyframes twinkle { 0%, 100% { transform: scale(0.7); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .sparkle { animation: none; } html { scroll-behavior: auto; } }
+
+    /* Cards */
+    main { position: relative; }
+    section { margin: 0 0 28px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 24px; box-shadow: 0 10px 30px rgba(78, 70, 140, 0.08);
+    }
+    h2 { margin: 0 0 6px; font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    h2 svg { width: 22px; height: 22px; flex: none; }
+    .lead { margin: 0 0 18px; color: var(--muted); }
+
+    /* Form */
+    form { display: grid; gap: 14px; }
+    .row { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+    label { display: grid; gap: 6px; font-weight: 700; font-size: 0.92rem; }
+    label .opt { font-weight: 500; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea {
+      font: inherit; font-weight: 500; color: var(--ink); width: 100%;
+      background: #fbfaff; border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px;
+    }
+    textarea { min-height: 150px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--lilac); box-shadow: 0 0 0 3px var(--lilac-soft); }
+    .hint { font-size: 0.82rem; color: var(--muted); font-weight: 500; }
+    .agree { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; font-size: 0.88rem; color: var(--muted); }
+    .agree input { width: auto; margin-top: 5px; accent-color: var(--lilac); }
+    .botcheck { position: absolute; left: -9999px; }
+    .send {
+      font: inherit; font-weight: 800; font-size: 1rem; color: #fff; cursor: pointer;
+      background: var(--lilac); border: 0; border-radius: 999px; padding: 12px 28px; justify-self: start;
+      box-shadow: 0 6px 16px rgba(139, 108, 240, 0.3);
+    }
+    .send:disabled { opacity: 0.6; cursor: wait; }
+    .status { margin: 0; font-weight: 700; font-size: 0.95rem; }
+    .status.ok { color: var(--ok); }
+    .status.bad { color: var(--bad); }
+    .status a { color: inherit; }
+
+    /* FAQ */
+    details { border-top: 1px solid var(--line); padding: 12px 0; }
+    details:first-of-type { border-top: 0; }
+    summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; color: var(--lilac); font-weight: 800; }
+    details[open] summary::after { content: '\2212'; }
+    details p { margin: 8px 0 0; color: var(--muted); }
+    code {
+      font-family: ui-monospace, Consolas, monospace; font-size: 0.85em; background: var(--lilac-soft);
+      color: var(--ink); padding: 2px 6px; border-radius: 6px; word-break: break-all;
+    }
+
+    /* Links */
+    .links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .links a {
+      flex: 1 1 160px; text-align: center; text-decoration: none; font-weight: 800; color: var(--ink);
+      background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 12px;
+    }
+    .links a:hover { border-color: var(--lilac); color: var(--lilac); }
+
+    footer { padding: 36px 0 44px; color: #e8f1ff; text-align: center; font-size: 0.85rem; }
+    footer p { margin: 4px 0; }
+    .waves { display: block; width: 100%; height: 40px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="bar">
+      <a class="brand" href="#top" aria-label="Witch Express">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l3.6 8.8 9.4.7-7.2 6.1 2.3 9.2L16 21.9l-8.1 4.9 2.3-9.2L3 11.5l9.4-.7z" fill="#ffc94d" stroke="#8b6cf0" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span><b>Witch Express</b><small data-i18n="localName"></small></span>
+      </a>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="ko">한국어</button>
+        <button type="button" data-lang="ja">日本語</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero" id="top">
+    <svg class="sparkle" style="left:12%;top:30px" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0l2.2 7.8L20 10l-7.8 2.2L10 20l-2.2-7.8L0 10l7.8-2.2z" fill="#fff"/></svg>
+    <svg class="sparkle" style="right:14%;top:70px;animation-delay:1s" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0l2.2 7.8L20 10l-7.8 2.2L10 20l-2.2-7.8L0 10l7.8-2.2z" fill="#ffc94d"/></svg>
+    <svg class="sparkle" style="left:24%;top:150px;animation-delay:2s" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0l2.2 7.8L20 10l-7.8 2.2L10 20l-2.2-7.8L0 10l7.8-2.2z" fill="#c9b8ff"/></svg>
+    <div class="wrap">
+      <h1 data-i18n="heroTitle">How can we help?</h1>
+      <p data-i18n="heroText">Bug reports, questions and feedback all go straight to the developer.</p>
+      <nav>
+        <a class="chip" href="#report" data-i18n="navReport">Report a problem</a>
+        <a class="chip" href="#faq" data-i18n="navFaq">FAQ</a>
+        <a class="chip" href="#links" data-i18n="navLinks">Links</a>
+      </nav>
+    </div>
+    <svg class="clouds" viewBox="0 0 1400 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 80 C60 40 120 40 170 70 C210 30 290 30 330 68 C380 36 450 40 490 74 C540 34 620 34 660 70 C710 30 800 32 840 72 C890 40 960 40 1000 70 C1050 30 1130 34 1170 72 C1220 42 1290 40 1340 70 C1370 56 1390 56 1400 62 L1400 120 L0 120 Z" fill="#e6defa"/>
+      <path d="M0 96 C70 60 140 62 190 88 C240 56 320 58 360 90 C420 60 500 62 540 92 C600 58 680 60 720 90 C780 58 860 60 900 92 C960 60 1040 62 1080 90 C1140 60 1220 62 1260 92 C1320 66 1380 66 1400 80 L1400 120 L0 120 Z" fill="#fffaf1"/>
+    </svg>
+  </div>
+
+  <main class="wrap">
+    <section id="report" class="card">
+      <h2>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l9 6 9-6M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z" fill="none" stroke="#8b6cf0" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span data-i18n="formTitle">Report a problem or send feedback</span>
+      </h2>
+      <p class="lead" data-i18n="formLead">We read every message and reply by email.</p>
+
+      <form id="report-form" novalidate>
+        <div class="row">
+          <label>
+            <span data-i18n="fType">Type</span>
+            <select name="type" required>
+              <option value="Bug" data-i18n="tBug">Bug</option>
+              <option value="Crash" data-i18n="tCrash">Crash or won't start</option>
+              <option value="Feedback" data-i18n="tFeedback">Feedback or idea</option>
+              <option value="Purchase" data-i18n="tPurchase">Purchase or Steam</option>
+              <option value="Other" data-i18n="tOther">Other</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="fEmail">Your email (for our reply)</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            <span><span data-i18n="fName">Name or Steam nickname</span> <span class="opt" data-i18n="optional">(optional)</span></span>
+            <input type="text" name="name" autocomplete="nickname" maxlength="80" />
+          </label>
+          <label>
+            <span><span data-i18n="fVersion">Game version</span> <span class="opt" data-i18n="optional">(optional)</span></span>
+            <input type="text" name="version" maxlength="40" data-i18n-placeholder="pVersion" placeholder="Shown on the title screen" />
+          </label>
+        </div>
+        <label>
+          <span><span data-i18n="fPc">OS and PC specs</span> <span class="opt" data-i18n="optional">(optional)</span></span>
+          <input type="text" name="pc" maxlength="200" placeholder="Windows 11, RTX 3060, 16 GB" />
+        </label>
+        <label>
+          <span data-i18n="fMessage">What happened?</span>
+          <textarea name="message" required maxlength="5000" data-i18n-placeholder="pMessage" placeholder="What did you do, what did you expect, and what happened instead?"></textarea>
+        </label>
+        <label>
+          <span><span data-i18n="fLink">Screenshot, video or log link</span> <span class="opt" data-i18n="optional">(optional)</span></span>
+          <input type="url" name="link" maxlength="500" placeholder="https://" />
+          <span class="hint" data-i18n="hLink">Upload files to Google Drive, Dropbox or similar and paste a share link. The FAQ below shows where the log file is.</span>
+        </label>
+        <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <label class="agree">
+          <input type="checkbox" name="agree" required />
+          <span data-i18n="fAgree">I agree that this information is used only to answer my message.</span>
+        </label>
+        <button class="send" type="submit" data-i18n="send">Send</button>
+        <p class="status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="faq" class="card">
+      <h2>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#8b6cf0" stroke-width="2"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2M12 17h.01" fill="none" stroke="#8b6cf0" stroke-width="2" stroke-linecap="round"/></svg>
+        <span data-i18n="faqTitle">Frequently asked questions</span>
+      </h2>
+      <details>
+        <summary data-i18n="q1">The game won't start or keeps crashing.</summary>
+        <p data-i18n="a1">In your Steam Library, right-click Witch Express, open Properties, then Installed Files, and choose "Verify integrity of game files". Updating your graphics driver also fixes many crashes. If it still happens, send us the form above with your log file.</p>
+      </details>
+      <details>
+        <summary data-i18n="q2">Where is the log file?</summary>
+        <p><span data-i18n="a2">Open this folder in File Explorer and attach Player.log (Player-prev.log is the run before):</span><br /><code>%USERPROFILE%\AppData\LocalLow\G1C\Witch Express</code></p>
+      </details>
+      <details>
+        <summary data-i18n="q3">Where are my save files?</summary>
+        <p><span data-i18n="a3">In the same folder as the log file:</span><br /><code>%USERPROFILE%\AppData\LocalLow\G1C\Witch Express</code></p>
+      </details>
+      <details>
+        <summary data-i18n="q4">Which languages are supported?</summary>
+        <p data-i18n="a4">English, Korean and Japanese.</p>
+      </details>
+      <details>
+        <summary data-i18n="q5">How do I get a refund?</summary>
+        <p><span data-i18n="a5">Refunds are handled by Steam. Request one from Steam Support:</span> <a href="https://help.steampowered.com/" target="_blank" rel="noopener">help.steampowered.com</a></p>
+      </details>
+      <details>
+        <summary data-i18n="q6">When does the game come out?</summary>
+        <p data-i18n="a6">The release date is not set yet. Add Witch Express to your Steam wishlist and Steam will email you on launch day.</p>
+      </details>
+    </section>
+
+    <section id="links" class="card">
+      <h2>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1" fill="none" stroke="#8b6cf0" stroke-width="2" stroke-linecap="round"/></svg>
+        <span data-i18n="linksTitle">Find us</span>
+      </h2>
+      <div class="links" id="link-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <svg class="waves" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 20 C100 0 200 0 300 20 S500 40 600 20 S800 0 900 20 S1100 40 1200 20" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+    </svg>
+    <div class="wrap">
+      <p data-i18n="privacy">Your email is used only to reply to you. Messages are delivered through Web3Forms.</p>
+      <p>&copy; 2026 G1C. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Fill these in. The Web3Forms access key comes from https://web3forms.com (enter the inbox address there).
+    var CONFIG = {
+      web3formsKey: '',
+      steamUrl: '',
+      discordUrl: '',
+      xUrl: ''
+    };
+
+    var T = {
+      en: {
+        localName: '',
+        heroTitle: 'How can we help?',
+        heroText: 'Bug reports, questions and feedback all go straight to the developer.',
+        navReport: 'Report a problem', navFaq: 'FAQ', navLinks: 'Links',
+        formTitle: 'Report a problem or send feedback',
+        formLead: 'We read every message and reply by email.',
+        fType: 'Type', tBug: 'Bug', tCrash: "Crash or won't start", tFeedback: 'Feedback or idea', tPurchase: 'Purchase or Steam', tOther: 'Other',
+        fEmail: 'Your email (for our reply)', fName: 'Name or Steam nickname', fVersion: 'Game version', pVersion: 'Shown on the title screen',
+        fPc: 'OS and PC specs', fMessage: 'What happened?', pMessage: 'What did you do, what did you expect, and what happened instead?',
+        fLink: 'Screenshot, video or log link', hLink: 'Upload files to Google Drive, Dropbox or similar and paste a share link. The FAQ below shows where the log file is.',
+        optional: '(optional)', fAgree: 'I agree that this information is used only to answer my message.', send: 'Send',
+        sending: 'Sending...', sent: 'Thanks! Your message was sent. We will reply by email.',
+        needFields: 'Please fill in your email and what happened, and tick the agreement box.',
+        failed: 'Sending failed. Please try again later, or email us directly: ',
+        notReady: 'The form is not connected yet. Please email us directly: ',
+        faqTitle: 'Frequently asked questions',
+        q1: "The game won't start or keeps crashing.",
+        a1: 'In your Steam Library, right-click Witch Express, open Properties, then Installed Files, and choose "Verify integrity of game files". Updating your graphics driver also fixes many crashes. If it still happens, send us the form above with your log file.',
+        q2: 'Where is the log file?', a2: 'Open this folder in File Explorer and attach Player.log (Player-prev.log is the run before):',
+        q3: 'Where are my save files?', a3: 'In the same folder as the log file:',
+        q4: 'Which languages are supported?', a4: 'English, Korean and Japanese.',
+        q5: 'How do I get a refund?', a5: 'Refunds are handled by Steam. Request one from Steam Support:',
+        q6: 'When does the game come out?', a6: 'The release date is not set yet. Add Witch Express to your Steam wishlist and Steam will email you on launch day.',
+        linksTitle: 'Find us', lSteam: 'Steam page', lDiscord: 'Discord', lX: 'X (Twitter)',
+        privacy: 'Your email is used only to reply to you. Messages are delivered through Web3Forms.',
+        title: 'Witch Express Support'
+      },
+      ko: {
+        localName: '마녀 특급',
+        heroTitle: '무엇을 도와드릴까요?',
+        heroText: '버그 신고, 질문, 의견은 모두 개발자에게 바로 전달돼요.',
+        navReport: '문제 신고', navFaq: '자주 묻는 질문', navLinks: '링크',
+        formTitle: '문제 신고와 의견 보내기',
+        formLead: '보내 주신 글은 모두 읽고 이메일로 답장드려요.',
+        fType: '종류', tBug: '버그', tCrash: '튕김 또는 실행 안 됨', tFeedback: '의견 또는 제안', tPurchase: '구매 또는 스팀', tOther: '기타',
+        fEmail: '이메일 (답장 받을 주소)', fName: '이름 또는 스팀 닉네임', fVersion: '게임 버전', pVersion: '타이틀 화면에 표시돼요',
+        fPc: 'OS와 PC 사양', fMessage: '어떤 일이 있었나요?', pMessage: '무엇을 했고, 무엇을 기대했고, 실제로는 어떻게 됐나요?',
+        fLink: '스크린샷, 영상 또는 로그 링크', hLink: '파일은 구글 드라이브나 드롭박스 등에 올리고 공유 링크를 붙여 주세요. 로그 파일 위치는 아래 자주 묻는 질문에 있어요.',
+        optional: '(선택)', fAgree: '이 정보를 답변에만 쓰는 데 동의해요.', send: '보내기',
+        sending: '보내는 중...', sent: '고마워요! 잘 보내졌어요. 이메일로 답장드릴게요.',
+        needFields: '이메일과 내용을 쓰고 동의에 체크해 주세요.',
+        failed: '보내지 못했어요. 잠시 뒤 다시 시도하거나 이메일로 보내 주세요: ',
+        notReady: '아직 폼이 연결되지 않았어요. 이메일로 보내 주세요: ',
+        faqTitle: '자주 묻는 질문',
+        q1: '게임이 실행되지 않거나 자꾸 튕겨요.',
+        a1: '스팀 라이브러리에서 Witch Express를 오른쪽 클릭해 속성 > 설치된 파일 > "게임 파일 무결성 확인"을 눌러 주세요. 그래픽 드라이버를 업데이트하면 해결되는 경우도 많아요. 그래도 같으면 로그 파일과 함께 위 폼으로 알려 주세요.',
+        q2: '로그 파일은 어디 있나요?', a2: '파일 탐색기에서 이 폴더를 열고 Player.log를 보내 주세요(Player-prev.log는 그 전 실행이에요):',
+        q3: '세이브 파일은 어디 있나요?', a3: '로그 파일과 같은 폴더에 있어요:',
+        q4: '어떤 언어를 지원하나요?', a4: '영어, 한국어, 일본어를 지원해요.',
+        q5: '환불은 어떻게 하나요?', a5: '환불은 스팀에서 처리해요. 스팀 고객지원에서 신청해 주세요:',
+        q6: '언제 출시하나요?', a6: '출시일은 아직 정해지지 않았어요. 스팀에서 찜해 두시면 출시 날 스팀이 이메일로 알려 드려요.',
+        linksTitle: '찾아오시는 곳', lSteam: '스팀 페이지', lDiscord: '디스코드', lX: 'X (트위터)',
+        privacy: '이메일은 답장에만 써요. 메시지는 Web3Forms를 통해 전달돼요.',
+        title: '마녀 특급 고객지원'
+      },
+      ja: {
+        localName: '魔女特急便',
+        heroTitle: 'お困りですか？',
+        heroText: '不具合の報告、ご質問、ご意見はすべて開発者に直接届きます。',
+        navReport: '不具合を報告', navFaq: 'よくある質問', navLinks: 'リンク',
+        formTitle: '不具合の報告・ご意見',
+        formLead: 'いただいたメッセージはすべて読み、メールでお返事します。',
+        fType: '種類', tBug: '不具合', tCrash: 'クラッシュ・起動しない', tFeedback: 'ご意見・ご提案', tPurchase: '購入・Steam', tOther: 'その他',
+        fEmail: 'メールアドレス（返信先）', fName: 'お名前・Steamのニックネーム', fVersion: 'ゲームのバージョン', pVersion: 'タイトル画面に表示されます',
+        fPc: 'OSとPCのスペック', fMessage: '何が起きましたか？', pMessage: '何をして、どうなるはずが、実際にはどうなりましたか？',
+        fLink: 'スクリーンショット・動画・ログのリンク', hLink: 'ファイルはGoogleドライブやDropboxなどにアップロードし、共有リンクを貼ってください。ログファイルの場所は下のよくある質問にあります。',
+        optional: '（任意）', fAgree: 'この情報が返信のためだけに使われることに同意します。', send: '送信',
+        sending: '送信中...', sent: 'ありがとうございます！送信しました。メールでお返事します。',
+        needFields: 'メールアドレスと内容を入力し、同意にチェックしてください。',
+        failed: '送信できませんでした。時間をおいて再度お試しいただくか、メールでお送りください：',
+        notReady: 'フォームはまだ準備中です。メールでお送りください：',
+        faqTitle: 'よくある質問',
+        q1: 'ゲームが起動しない、または落ちてしまいます。',
+        a1: 'Steamライブラリで Witch Express を右クリックし、プロパティ > インストール済みファイル >「ゲームファイルの整合性を確認」を選んでください。グラフィックドライバーの更新で直ることも多いです。それでも直らない場合は、ログファイルを添えて上のフォームからお知らせください。',
+        q2: 'ログファイルはどこにありますか？', a2: 'エクスプローラーでこのフォルダを開き、Player.log を送ってください（Player-prev.log はその前の起動のものです）：',
+        q3: 'セーブデータはどこにありますか？', a3: 'ログファイルと同じフォルダにあります：',
+        q4: '対応言語は？', a4: '英語、韓国語、日本語に対応しています。',
+        q5: '返金はどうすればいいですか？', a5: '返金はSteamが対応します。Steamサポートからお申し込みください：',
+        q6: '発売日はいつですか？', a6: '発売日はまだ決まっていません。Steamでウィッシュリストに追加すると、発売日にSteamからメールが届きます。',
+        linksTitle: 'リンク', lSteam: 'Steamページ', lDiscord: 'Discord', lX: 'X（Twitter）',
+        privacy: 'メールアドレスは返信のためだけに使います。メッセージは Web3Forms を通じて届きます。',
+        title: '魔女特急便 サポート'
+      }
+    };
+
+    // The inbox address, kept out of plain text so simple scrapers do not pick it up.
+    function inbox() { return ['moc.liamg', 'vedegessap'].map(function (s) { return s.split('').reverse().join(''); }).reverse().join('@'); }
+
+    var lang = 'en';
+
+    function pickLang() {
+      var q = new URLSearchParams(location.search).get('lang');
+      if (q && T[q]) return q;
+      try { var saved = localStorage.getItem('we-lang'); if (saved && T[saved]) return saved; } catch (e) {}
+      var list = navigator.languages || [navigator.language || 'en'];
+      for (var i = 0; i < list.length; i++) {
+        var code = String(list[i]).slice(0, 2).toLowerCase();
+        if (T[code]) return code;
+      }
+      return 'en';
+    }
+
+    function applyLang(next) {
+      lang = next;
+      var t = T[lang];
+      document.documentElement.lang = lang;
+      document.title = t.title;
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-placeholder');
+        if (t[key]) el.placeholder = t[key];
+      });
+      document.querySelectorAll('.langs button').forEach(function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+      });
+      renderLinks();
+      try { localStorage.setItem('we-lang', lang); } catch (e) {}
+    }
+
+    function renderLinks() {
+      var t = T[lang];
+      var box = document.getElementById('link-list');
+      var items = [[CONFIG.steamUrl, t.lSteam], [CONFIG.discordUrl, t.lDiscord], [CONFIG.xUrl, t.lX]];
+      box.innerHTML = '';
+      items.forEach(function (it) {
+        if (!it[0]) return;
+        var a = document.createElement('a');
+        a.href = it[0]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = it[1];
+        box.appendChild(a);
+      });
+      var none = box.children.length === 0;
+      document.getElementById('links').hidden = none;
+      document.querySelector('a[href="#links"]').hidden = none;
+    }
+
+    function showStatus(kind, text, withMail) {
+      var el = document.getElementById('form-status');
+      el.className = 'status ' + kind;
+      el.textContent = text;
+      if (withMail) {
+        var a = document.createElement('a');
+        a.href = 'mailto:' + inbox() + '?subject=' + encodeURIComponent('[Witch Express] Support');
+        a.textContent = inbox();
+        el.appendChild(a);
+      }
+    }
+
+    document.querySelectorAll('.langs button').forEach(function (b) {
+      b.addEventListener('click', function () { applyLang(b.getAttribute('data-lang')); });
+    });
+
+    document.getElementById('report-form').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      var el = function (n) { return f.elements[n]; };
+      var t = T[lang];
+      if (el('botcheck').checked) return;
+      if (!el('email').value.trim() || !el('email').checkValidity() || !el('message').value.trim() || !el('agree').checked) {
+        showStatus('bad', t.needFields, false);
+        return;
+      }
+      if (!CONFIG.web3formsKey) {
+        showStatus('bad', t.notReady, true);
+        return;
+      }
+      var btn = f.querySelector('.send');
+      btn.disabled = true;
+      showStatus('', t.sending, false);
+      var summary = el('message').value.trim().replace(/\s+/g, ' ').slice(0, 50);
+      var payload = {
+        access_key: CONFIG.web3formsKey,
+        subject: '[Witch Express] ' + el('type').value + ': ' + summary,
+        from_name: 'Witch Express Support',
+        replyto: el('email').value.trim(),
+        'Type': el('type').value,
+        'Email': el('email').value.trim(),
+        'Name': el('name').value.trim(),
+        'Game version': el('version').value.trim(),
+        'OS / PC': el('pc').value.trim(),
+        'Message': el('message').value.trim(),
+        'Link': el('link').value.trim(),
+        'Page language': lang,
+        botcheck: false
+      };
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) { return r.json(); }).then(function (res) {
+        if (res && res.success) {
+          f.reset();
+          showStatus('ok', t.sent, false);
+        } else {
+          showStatus('bad', t.failed, true);
+        }
+      }).catch(function () {
+        showStatus('bad', t.failed, true);
+      }).then(function () { btn.disabled = false; });
+    });
+
+    applyLang(pickLang());
+  </script>
+</body>
+</html>

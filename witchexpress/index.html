@@ -286,9 +286,9 @@
   </footer>
 
   <script>
-    // Fill these in. The Web3Forms access key comes from https://web3forms.com (enter the inbox address there).
+    // The Web3Forms access key is public by design; submissions go to the inbox registered at https://web3forms.com.
     var CONFIG = {
-      web3formsKey: '',
+      web3formsKey: '46ece2ed-675d-415e-84ac-7ae1026da834',
       steamUrl: '',
       discordUrl: '',
       xUrl: ''
@@ -480,8 +480,7 @@
         'OS / PC': el('pc').value.trim(),
         'Message': el('message').value.trim(),
         'Link': el('link').value.trim(),
-        'Page language': lang,
-        botcheck: false
+        'Page language': lang
       };
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
